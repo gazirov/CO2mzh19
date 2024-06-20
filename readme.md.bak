@@ -11,10 +11,10 @@ there are 3 scripts in the set
 working script from the first example outputs data to console and also writes to CSV file.
 
 **mzh19MQ.py**
-script transfers sensor data to the MQTT bus, for example, for data collection by a smart home 
+script transfers sensor data to the MQ bus, for example, for data collection by a smart home 
 
 **mhz19MQ_CSV.py**
-transfers sensor data both to the MQTT bus and to a CSV file
+transfers sensor data both to the MQ bus and to a CSV file
 
 
 ---

@@ -19,7 +19,7 @@ def crc8(a):
     crc += 1
     return crc
 #it is necessary to specify the port on your device where the sensor is connected.it is necessary to specify the port on your device where the sensor is connected.
-#for example on raspberry PI port='/dev/serial0'
+#for example on raspberiPI port='/dev/serial0'
 port = '/dev/ttyS0'
 
 sys.stderr.write(f'Trying port {port}\n')

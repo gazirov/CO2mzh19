@@ -3,8 +3,8 @@ import serial, os, time, sys, datetime
 import paho.mqtt.client as mqtt  # Import the MQTT library
 
 # MQTT Settings
-MQTT_BROKER = "127.0.0.1"
-MQTT_PORT = 1883
+MQTT_BROKER = "192.168.88.3"
+MQTT_PORT = 44444
 MQTT_TOPIC = "sensor/co2"
 
 def on_connect(client, userdata, flags, rc):
@@ -50,9 +50,21 @@ try:
         if crc != data[8]:
             sys.stderr.write(f'CRC error {crc} vs {data[8]}\n')
         else:
-            co2value = data[2] * 256 + data[3]
-            mqtt_payload = str(co2value)
-            mqtt_publish(client, MQTT_TOPIC, mqtt_payload, True)
+            while True:
+                result = ser.write(b'\xFF\x01\x86\x00\x00\x00\x00\x00\x79')
+                time.sleep(0.1)
+                data = ser.read(9)
+                crc = crc8(data)
+                if crc != data[8]:
+                    sys.stderr.write(f'CRC error {crc} vs {data[8]}\n')
+                else:       
+                    co2value = data[2] * 256 + data[3]
+                    #print(f"co2= {co2value}")
+                    mqtt_payload = str(co2value)
+                    mqtt_publish(client, MQTT_TOPIC, mqtt_payload, True)
+                    t = datetime.datetime.now()
+                    sleeptime = 60 - t.second
+                    time.sleep(sleeptime)
 except Exception as e:
     sys.stderr.write(f'Error reading serial port {type(e).__name__}: {e}\n')
 finally:
